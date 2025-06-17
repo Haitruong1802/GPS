@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xác Thực Vị Trí Check-in</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e8e8e8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #d80018;
+      padding: 40px 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      text-align: center;
+      width: 350px;
+    }
+    .logo {
+      width: 200px;
+      /* margin-bottom: 20px; */
+    }
+    h1 {
+      font-size: 20px;
+      color: white;
+      /* margin-bottom: 30px; */
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 16px;
+      background-color: #fff;
+      color: red;
+      border: none;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #a80000;
+    }
+    .footer {
+      font-size: 12px;
+      color: white;
+      margin-top: 20px;
+    }
+  </style>
+  <script>
+    function checkLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+
+          var companyLat = 10.7517111;
+          var companyLon = 106.7077887;
+
+          var distance = calculateDistance(companyLat, companyLon, latitude, longitude);
+
+          if (distance < 0.1) {
+            alert("Vị trí hợp lệ. Chuyển đến form.");
+            window.location.href = "https://forms.gle/wqacqEvh6XmwYbzXA"; // Thay bằng link form của bạn
+          } else {
+            alert("Bạn chưa có mặt tại công ty. Vui lòng đến đúng vị trí để check-in.");
+          }
+        }, function(error) {
+          alert("Không thể lấy vị trí GPS: " + error.message);
+        });
+      } else {
+        alert("Thiết bị không hỗ trợ định vị GPS.");
+      }
+    }
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      var R = 6371;
+      var dLat = (lat2 - lat1) * Math.PI / 180;
+      var dLon = (lon2 - lon1) * Math.PI / 180;
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <img src="./images/logo.jpg" alt="Logo" class="logo">
+    <h1>XÁC THỰC VỊ TRÍ CÁI BẠN ƯI :V</h1><br >
+    <button onclick="checkLocation()">Ở đây nè</button>
+    <div class="footer">Powered by Sintech.vn</div>
+  </div>
+</body>
+</html>
